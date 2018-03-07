@@ -1,0 +1,35 @@
+#!/bin/bash
+
+# GOogles whatever IT is that you want to and shows you in browser
+
+# Dependencies:
+#     gridsite-clients [2.2.6-1build1] (for 'urlencode': https://linux.die.net/man/1/urlencode)
+
+# Usage:
+#     ./goit [search term]
+#     ./goit *hit enter* ...and enter search term when asked
+
+function show_usage() {
+	echo "GOogle IT (v0.1) by Rishi Dabre"
+	echo "Usage:"
+	echo "    goit [search term]"
+	echo "    goit *hit enter* ...and enter search term when asked"
+}
+
+function go() {
+	1>/dev/null 2>/dev/null google-chrome --incognito https://www.google.com/search?q=$1&oq=$1
+}
+
+if [ $# = 0 ]; then
+	echo -n "What? "
+	read text
+	if [ "$text" != "" ]; then
+		go `urlencode -m $text`
+	else
+		echo "Nothing, got it!"
+	fi
+elif [[ ( "$1" = "?" ) || ( "$1" = "-h" ) || ( "$1" = "--help" ) ]]; then
+	show_usage
+else
+	go `urlencode -m $*`
+fi
